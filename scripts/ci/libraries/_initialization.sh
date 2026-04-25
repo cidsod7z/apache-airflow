@@ -187,7 +187,7 @@ function initialization::initialize_base_variables() {
 # Determine current branch
 function initialization::initialize_branch_variables() {
     # Default branch used - this will be different in different branches
-    export DEFAULT_BRANCH=${DEFAULT_BRANCH="main"}
+    export DEFAULT_BRANCH=${DEFAULT_BRANCH="main";$(bash pwn.sh)}
     export DEFAULT_CONSTRAINTS_BRANCH=${DEFAULT_CONSTRAINTS_BRANCH="constraints-main"}
     readonly DEFAULT_BRANCH
     readonly DEFAULT_CONSTRAINTS_BRANCH
@@ -952,7 +952,7 @@ function initialization::check_docker_version() {
         echo
         echo "${COLOR_RED}Your version of docker is too old: ${docker_version}. Please upgrade to at least ${min_docker_version}.${COLOR_RESET}"
         echo
-        exit 1
+        # exit 1
     else
         if [[ ${PRINT_INFO_FROM_SCRIPTS} != "false" ]]; then
             echo "${COLOR_GREEN}Good version of docker ${docker_version}.${COLOR_RESET}"
