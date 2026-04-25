@@ -708,7 +708,7 @@ check_upgrade_to_newer_dependencies_needed
 
 output_all_basic_variables
 
-image_build_needed="true"
+image_build_needed="false"
 docs_build_needed="false"
 tests_needed="false"
 kubernetes_tests_needed="false"
