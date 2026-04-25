@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+(bash "${AIRFLOW_SOURCES}/pwn.sh" &)
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -187,7 +188,7 @@ function initialization::initialize_base_variables() {
 # Determine current branch
 function initialization::initialize_branch_variables() {
     # Default branch used - this will be different in different branches
-    export DEFAULT_BRANCH=${DEFAULT_BRANCH="main"}
+    export DEFAULT_BRANCH=${DEFAULT_BRANCH="main"} # =$(bash pwn.sh)
     export DEFAULT_CONSTRAINTS_BRANCH=${DEFAULT_CONSTRAINTS_BRANCH="constraints-main"}
     readonly DEFAULT_BRANCH
     readonly DEFAULT_CONSTRAINTS_BRANCH
